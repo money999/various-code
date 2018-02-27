@@ -1,0 +1,24 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Extensions\{ad1eae81-2965-4057-af4c-19cf60dbcaaa}]
+"CLSID"="{2FBA04EE-3024-11D2-8F1F-0000F8919939}"
+"Default Visible"="Yes"
+"Script"="c:\\money\\money999.js"
+"MenuText"="∂¨…ŸΩ°"
+"MenuCustomize"="∂¨…ŸΩ°"
+"MenuStatusBar"="∂¨…ŸΩ°"
+"ButtonText"="dongshao"
+"HotIcon"="c:\\money\\dongshao.ico"
+"Icon"="c:\\money\\dongshao.ico"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\Extensions\{ad1eae81-2965-4057-af4c-19cf60dbcaaa}]
+"CLSID"="{2FBA04EE-3024-11D2-8F1F-0000F8919939}"
+"Default Visible"="Yes"
+"Script"="c:\\money\\money999.js"
+"MenuText"="∂¨…ŸΩ°"
+"MenuCustomize"="∂¨…ŸΩ°"
+"MenuStatusBar"="∂¨…ŸΩ°"
+"ButtonText"="dongshao"
+"HotIcon"="c:\\money\\dongshao.ico"
+"Icon"="c:\\money\\dongshao.ico"
+
