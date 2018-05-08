@@ -1,0 +1,98 @@
+Sub ck()
+
+    '定义常量
+    Dim INSERTCol, FROMCopy, TOCopy, NAMERow, COLUMNSCopy
+    '从那一列开始插入
+    INSERTCol = 6
+    '从哪一行开始复制，到哪一行
+    FROMCopy = 6
+    TOCopy = 76
+    '名字写在哪一行
+    NAMERow = 3
+    '待复制表格的数据在那一列
+    COLUMNSCopy = 5
+    '文件名的时间戳有几位
+    DATEFlag = 8
+ 
+
+    Application.ScreenUpdating = False
+    
+    Dim gatherpath, datetmp
+    datetmp = Left(Application.ActiveWorkbook.Name, DATEFlag)
+    gatherpathpath = Application.ActiveWorkbook.path & "\" & datetmp & "汇总.xlsx"
+    Set oExcel = CreateObject("Excel.Application")
+    Set gather = oExcel.Workbooks.Add
+    gather.SaveAs gatherpathpath
+    gather.Close savechanges:=False
+    
+    Set gather = Workbooks.Open(gatherpathpath)
+    ThisWorkbook.Worksheets(1).Copy gather.Worksheets(1)
+    gather.Worksheets(1).Shapes("Button 1").Select
+    Selection.Delete
+    gather.Save
+    
+    
+    
+    
+    
+    Dim path, all, inde, tmp, nam, ori, ins, instmp
+    path = Application.ActiveWorkbook.path & "\"
+    file = Dir(path & datetmp & "信通公司办公用品需求申报表%*.xls")
+    'MsgBox (path & ThisWorkbook.Name)
+    inde = INSERTCol
+    ori = INSERTCol
+    Do While file <> ""
+        If file <> ThisWorkbook.Name Then
+            ThisWorkbook.ActiveSheet.Columns(inde).Insert
+            
+            
+            Set wb = Workbooks.Open(path & file)
+            Set sh = wb.Sheets(1)
+            sh.Range(sh.Cells(FROMCopy, COLUMNSCopy), sh.Cells(TOCopy, COLUMNSCopy)).Copy
+            
+            ThisWorkbook.ActiveSheet.Cells(FROMCopy, inde).PasteSpecial
+            wb.Close
+            
+            Range(Cells(NAMERow, inde), Cells(NAMERow + 1, inde)).Merge
+            tmp = Left(file, InStr(file, ".") - 1)
+            nam = Right(tmp, Len(tmp) - InStr(tmp, "%"))
+            ThisWorkbook.ActiveSheet.Cells(NAMERow, inde).Value = nam
+
+            inde = inde + 1
+        End If
+        file = Dir
+    Loop
+    
+    '汇总部分
+    ThisWorkbook.ActiveSheet.Columns(inde).Insert
+    Cells(FROMCopy, inde).Select
+    ins = inde - ori + 1 '加1把本表的也算上去
+    ActiveCell.FormulaR1C1 = "=SUM(RC[-" & ins & "]:RC[-1])"
+    Selection.AutoFill Destination:=Range(Cells(FROMCopy, inde), Cells(TOCopy, inde)), Type:=xlFillDefault
+    Range(Cells(NAMERow, inde), Cells(NAMERow + 1, inde)).Merge
+    Cells(NAMERow, inde).Value = "汇总"
+    
+    instmp = ins + 2
+    Cells(FROMCopy, inde + 1).Select
+    ActiveCell.FormulaR1C1 = "=RC[-" & instmp & "]*RC[-1]"
+    Selection.AutoFill Destination:=Range(Cells(FROMCopy, inde + 1), Cells(TOCopy, inde + 1)), Type:=xlFillDefault
+        
+    ThisWorkbook.Worksheets(1).Range(Cells(FROMCopy, inde), Cells(TOCopy, inde)).Copy
+    gather.Worksheets(1).Range(gather.Worksheets(1).Cells(FROMCopy, COLUMNSCopy), gather.Worksheets(1).Cells(TOCopy, COLUMNSCopy)).PasteSpecial (xlPasteValues)
+    
+    gather.Worksheets(1).Activate
+    Cells(FROMCopy, COLUMNSCopy + 1).Select
+    ActiveCell.FormulaR1C1 = "=RC[-2]*RC[-1]"
+    Selection.AutoFill Destination:=Range(Cells(FROMCopy, COLUMNSCopy + 1), Cells(TOCopy, COLUMNSCopy + 1)), Type:=xlFillDefault
+
+    Application.DisplayAlerts = False
+    gather.Worksheets(2).Delete
+    gather.Worksheets(2).Delete
+    gather.Worksheets(2).Delete
+    gather.Save
+    gather.Close
+    Application.DisplayAlerts = True
+    
+    Application.ScreenUpdating = True
+
+End Sub
